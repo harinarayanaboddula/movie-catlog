@@ -49,15 +49,8 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#movieForm').submit(function(event){
-                event.preventDefault();
-                if($('#movieForm').valid()){
-                    this.submit();
-                }
-            });
             $('#movieForm').validate({
-                submit: true
-                rules: {
+                    rules: {
                     title: "required",
                     genre: "required",
                     year: {
@@ -82,6 +75,16 @@
                         required: "Image is required",
                         extension: "Invalid image file format (allowed: jpg, jpeg, png, bmp)"
                     }
+                }
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit({
+                        success: function(response) {
+                            alert('form submitted')
+                        }
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText)
+                        }
+                    })
                 }
             })
         });

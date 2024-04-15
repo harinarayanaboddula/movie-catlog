@@ -27,9 +27,7 @@
                 </div>
             </div>
             <div id="loader" class="text-center my-5 d-none"><i class="fa-solid fa-spinner fa-spin fa-3x"></i></div>
-            <div class="col-md-12">
-                <div id="movieResults"></div>
-            </div>
+            <div id="movieResults"></div>
 
 
             <div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog"
