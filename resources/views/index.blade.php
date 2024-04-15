@@ -73,9 +73,10 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('.read-more-btn').click(function() {
+            $(document).on('click', '.read-more-btn', function() {
                 var description = $(this).data('description');
                 $('#movieDescription').text(description);
+                $('#descriptionModal').modal('show');
             });
             fetchMovies();
         });
