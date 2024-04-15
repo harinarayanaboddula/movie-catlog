@@ -17,39 +17,19 @@
             </div>
             <div class="col-md-12 pb-4">
                 <div class="d-flex justify-content-between align-items-center">
-
-                        <form action="{{ route('search') }}" method="POST">
-                            @csrf
-                            <div class="d-flex align-items-center">
-                                <input class="form-control mr-sm-2" name="search" type="search" id="searchInput" placeholder="Search" aria-label="Search">
-                                <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
-                            </div>
-                        </form>
-
+                    <div class="d-flex align-items-center">
+                        <input class="form-control mr-sm-2" name="search" type="search" id="searchData" placeholder="Search movies, genre or year" aria-label="Search">
+                        <button type="button" class="btn btn-primary" id="searchButton">Search</button>
+                    </div>
                     <div>
                         <a href="{{ route('movie.index') }}"><button type="button" class="btn btn-primary">Add Movie </button></a>
                     </div>
                 </div>
             </div>
             <div id="loader" class="text-center my-5 d-none"><i class="fa-solid fa-spinner fa-spin fa-3x"></i></div>
-            @forelse ($movies as $movie)
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="{{ asset('images/'.$movie->image) }}" class="card-img-top image-tag" alt="image">
-                    <div class="card-body">
-                        <p class="card-text"><b>Title: </b>{{ $movie->title }}</p>
-                        <p class="card-text"><b>Genre: </b>{{ $movie->genre }}</p>
-                        <p class="card-text"><b>Release Year: </b>{{ $movie->year }}</p>
-                        <p class="card-text line-clamp"><b>Description: </b>{{ $movie->description }}</p>
-                        <button type="button" class="btn btn-primary read-more-btn" data-toggle="modal" data-target="#descriptionModal" data-description="{{ $movie->description }}">
-                            Read More
-                        </button>
-                    </div>
-                </div>
+            <div class="col-md-12">
+                <div id="movieResults"></div>
             </div>
-            @empty
-            <p>No movies found for your search query.</p>
-            @endforelse
 
 
             <div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog"
@@ -97,7 +77,39 @@
                 var description = $(this).data('description');
                 $('#movieDescription').text(description);
             });
+            fetchMovies();
         });
+        $('#searchData').keydown(function(e) {
+            if(e.keyCode == 13) {
+                fetchMovies($(this).val());
+            }
+        });
+        $('#searchButton').click(function(e) {
+            fetchMovies($('#searchData').val());
+        });
+
+        function fetchMovies(search = null) {
+            $('#loader').removeClass('d-none');
+            $('#movieResults').html('');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: '{{ route("search") }}',
+                data: {search:search},
+                success: function(response) {
+                    $('#loader').addClass('d-none');
+                    $('#movieResults').html(response);
+                },
+                error: function(xhr, status, error){
+                    $('#loader').addClass('d-none');
+                    $('#movieResults').html('<p class="text-center my-5">There is some issue with fetching the search results</p>');
+                }
+            })
+        }
 
 
     </script>

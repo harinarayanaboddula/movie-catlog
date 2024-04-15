@@ -44,9 +44,7 @@ class MovieController extends Controller
 
     public function getMoviesList() {
 
-        $movies = Movie::all();
-
-        return view('index', compact('movies'));
+        return view('index');
     }
 
     public function search(Request $request) {
@@ -58,6 +56,6 @@ class MovieController extends Controller
             ->get();
 
 
-        return view('index', compact('movies'));
+        return view('search_results', compact('movies'))->render();
     }
 }
