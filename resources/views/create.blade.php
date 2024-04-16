@@ -47,44 +47,62 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script>
+        $(document).on('ready', function(){
+            console.log('ready')
+        })
         $(document).ready(function() {
-            $('#movieForm').validate({
+            console.log($(`form[id='movieForm']`));
+            $(`form[id='movieForm']`).validate({
                     rules: {
                     title: "required",
                     genre: "required",
                     year: {
                         required: true,
                         number: true
-                    }
+                    },
                     description: "required",
                     image: {
                         required: true,
                         extension: "jpg|jpeg|png|bmp"
                     }
-                }
+                },
                 messages: {
                     title: "Please enter the title of the Movie",
                     genre: "Genre is required",
                     year: {
                         required: "Release year is required",
                         number: "Release year must be numeric"
-                    }
+                    },
                     description: "Description is required",
                     image: {
                         required: "Image is required",
                         extension: "Invalid image file format (allowed: jpg, jpeg, png, bmp)"
                     }
-                }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    error.insertAfter($(element));
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
                 submitHandler: function(form) {
-                    $(form).ajaxSubmit({
-                        success: function(response) {
-                            alert('form submitted')
-                        }
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText)
-                        }
-                    })
+                    console.log("Submit");
+                    $(form).submit()
+                    // $(form).ajaxSubmit({
+                    //     success: function(response) {
+                    //         alert('form submitted')
+                    //     }
+                    //     error: function(xhr, status, error) {
+                    //         console.error(xhr.responseText)
+                    //     }
+                    // })
                 }
             })
         });
