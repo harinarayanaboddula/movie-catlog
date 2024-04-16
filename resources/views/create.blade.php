@@ -49,11 +49,8 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script>
-        $(document).on('ready', function(){
-            console.log('ready')
-        })
+
         $(document).ready(function() {
-            console.log($(`form[id='movieForm']`));
             $(`form[id='movieForm']`).validate({
                     rules: {
                     title: "required",
@@ -93,16 +90,29 @@
                     $(element).removeClass('is-invalid');
                 },
                 submitHandler: function(form) {
-                    console.log("Submit");
-                    $(form).submit()
-                    // $(form).ajaxSubmit({
-                    //     success: function(response) {
-                    //         alert('form submitted')
-                    //     }
-                    //     error: function(xhr, status, error) {
-                    //         console.error(xhr.responseText)
-                    //     }
-                    // })
+                    event.preventDefault();
+
+                    var formData = $(form).serialize();
+
+                    // Make an AJAX request
+                    $.ajax({
+                        url: '{{ route("movie.store") }}', // Replace with your server endpoint
+                        type: 'POST', // Use the appropriate HTTP method (POST, GET, etc.)
+                        data: formData,
+                        success: function(response) {
+                            // Handle the success response (e.g., show a success message)
+                            console.log('Form submitted successfully:', response);
+                        },
+                        error: function(error) {
+                            // Handle the error response (e.g., show an error message)
+                            console.error('Error submitting form:', error);
+                        }
+                    });
+
+                    $('#submitForm').click(function() {
+                        $(`form[id='movieForm']`).submit(); // Trigger the form submission
+                    });
+
                 }
             })
         });
