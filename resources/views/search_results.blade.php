@@ -7,9 +7,20 @@
             <p class="card-text"><b>Genre: </b>{{ $movie->genre }}</p>
             <p class="card-text"><b>Release Year: </b>{{ $movie->year }}</p>
             <p class="card-text line-clamp"><b>Description: </b>{{ $movie->description }}</p>
-            <button type="button" class="btn btn-primary read-more-btn" data-toggle="modal" data-target="#descriptionModal" data-description="{{ $movie->description }}">
-                Read More
-            </button>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="button" class="btn btn-outline-primary read-more-btn" data-toggle="modal" data-target="#descriptionModal" data-description="{{ $movie->description }}">
+                        Read More
+                    </button>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="{{ route('movie.edit', $movie->id)}}" class="mr-1"><button class="btn btn-outline-secondary">Edit</button></a>
+                    <form action="{{ route('movie.destroy', $movie->id)}}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

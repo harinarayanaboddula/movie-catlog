@@ -5,24 +5,36 @@
         <div class="row">
             <div class="col-md-4">
                 @if (session()->has('success'))
-                    <p>{{ session()->get('success') }}</p>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <p>{{ session()->get('success') }}</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 @endif
                 @if ($errors->any())
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 @endif
             </div>
             <div class="col-md-12 pb-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <input class="form-control mr-sm-2" name="search" type="search" id="searchData" placeholder="Search movies, genre or year" aria-label="Search">
+                        <input class="form-control mr-sm-2" name="search" type="search" id="searchData"
+                            placeholder="Search movies, genre or year" aria-label="Search">
                         <button type="button" class="btn btn-primary" id="searchButton">Search</button>
                     </div>
                     <div>
-                        <a href="{{ route('movie.index') }}"><button type="button" class="btn btn-primary">Add Movie </button></a>
+                        <a href="{{ route('movie.index') }}"><button type="button" class="btn btn-primary">Add Movie
+                            </button></a>
                     </div>
                 </div>
             </div>
@@ -47,7 +59,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,7 +96,7 @@
             fetchMovies();
         });
         $('#searchData').keydown(function(e) {
-            if(e.keyCode == 13) {
+            if (e.keyCode == 13) {
                 fetchMovies($(this).val());
             }
         });
@@ -102,19 +114,21 @@
             });
             $.ajax({
                 type: "POST",
-                url: '{{ route("search") }}',
-                data: {search:search},
+                url: '{{ route('search') }}',
+                data: {
+                    search: search
+                },
                 success: function(response) {
                     $('#loader').addClass('d-none');
                     $('#movieResults').html(response);
                 },
-                error: function(xhr, status, error){
+                error: function(xhr, status, error) {
                     $('#loader').addClass('d-none');
-                    $('#movieResults').html('<p class="text-center my-5">There is some issue with fetching the search results</p>');
+                    $('#movieResults').html(
+                        '<p class="text-center my-5">There is some issue with fetching the search results</p>'
+                        );
                 }
             })
         }
-
-
     </script>
 @endpush
