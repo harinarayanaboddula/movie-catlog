@@ -49,7 +49,7 @@
                         <label for="image">Image</label>
                         <input type="file" class="form-control" name="image" id="image">
                         @if ($movie->image)
-                            <img src="{{ asset('images/' . $movie->image) }}" alt="Movie Image" class="img-thumbnail mt-2" style="max-width: 200px; max-height: 200px;
+                            <img src="{{ asset('images/' . $movie->image) }}" alt="Movie Image" id="image_preview" class="img-thumbnail mt-2" style="width: 166px; height: 230px;
                             object-fit: cover;">
                         @endif
                     </div>
@@ -124,6 +124,19 @@
                         $(`form[id='movieForm']`).submit();
                     });
 
+                }
+            })
+
+            $('#image').change(function(e) {
+
+                if (this.files && this.files[0]) {
+                    var reader =  new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#image_preview').attr('src', e.target.result).show();
+                    }
+
+                    reader.readAsDataURL(this.files[0]);
                 }
             })
         });
