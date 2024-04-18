@@ -48,6 +48,8 @@
                     <div class="form-group">
                         <label for="image">Image</label>
                         <input type="file" class="form-control" name="image" id="image">
+                        <img src="{{ asset('images/no-image.png') }}" alt="Movie Image" id="image_preview" class="img-thumbnail mt-2" style="width: 166px; height: 230px;
+                            object-fit: cover;">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -124,6 +126,18 @@
 
                 }
             })
+
+            $('#image').change(function(e) {
+                if (this.files && this.files[0]) {
+                    var reader =  new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#image_preview').attr('src', e.target.result).show();
+                    }
+
+                    reader.readAsDataURL(this.files[0]);
+                }
+                })
         });
     </script>
 @endpush
