@@ -75,7 +75,7 @@
                     },
                     description: "required",
                     image: {
-                        required: true,
+                        required: isset($movie->image) ? false : true,
                         extension: "jpg|jpeg|png|bmp"
                     }
                 },
