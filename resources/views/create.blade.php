@@ -107,21 +107,19 @@
 
                     // Make an AJAX request
                     $.ajax({
-                        url: '{{ route('movie.store') }}', // Replace with your server endpoint
-                        type: 'POST', // Use the appropriate HTTP method (POST, GET, etc.)
+                        url: '{{ route('movie.store') }}',
+                        type: 'POST',
                         data: formData,
                         success: function(response) {
-                            // Handle the success response (e.g., show a success message)
                             console.log('Form submitted successfully:', response);
                         },
                         error: function(error) {
-                            // Handle the error response (e.g., show an error message)
                             console.error('Error submitting form:', error);
                         }
                     });
 
                     $('#submitForm').click(function() {
-                        $(`form[id='movieForm']`).submit(); // Trigger the form submission
+                        $(`form[id='movieForm']`).submit();
                     });
 
                 }
