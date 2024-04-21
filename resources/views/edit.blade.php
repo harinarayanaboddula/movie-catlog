@@ -104,21 +104,6 @@
                     $(element).removeClass('is-invalid');
                 },
                 submitHandler: function(form) {
-                    event.preventDefault();
-
-                    var formData = $(form).serialize();
-
-                    $.ajax({
-                        url: '{{ route("movie.store") }}',
-                        type: 'POST',
-                        data: formData,
-                        success: function(response) {
-                            console.log('Form submitted successfully:', response);
-                        },
-                        error: function(error) {
-                            console.error('Error submitting form:', error);
-                        }
-                    });
 
                     $('#submitForm').click(function() {
                         $(`form[id='movieForm']`).submit();

@@ -15,9 +15,9 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <a href="{{ route('movie.edit', $movie->id)}}" class="mr-1"><button class="btn btn-outline-secondary">Edit</button></a>
-                    <form action="{{ route('movie.destroy', $movie->id)}}" method="POST">
+                    <form id="deleteMovieForm">
                         @csrf
-                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        <button type="button" class="btn btn-outline-danger" id="delete-movie">Delete</button>
                     </form>
                 </div>
             </div>

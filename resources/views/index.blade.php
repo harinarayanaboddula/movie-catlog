@@ -33,8 +33,7 @@
                         <button type="button" class="btn btn-primary" id="searchButton">Search</button>
                     </div>
                     <div>
-                        <a href="{{ route('movie.index') }}"><button type="button" class="btn btn-primary">Add Movie
-                            </button></a>
+                        <a href="{{ route('movie.index') }}"><button type="button" class="btn btn-primary">Add Movie </button></a>
                     </div>
                 </div>
             </div>
@@ -56,9 +55,6 @@
                         </div>
                         <div class="modal-body">
                             <p id="movieDescription"></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -86,6 +82,7 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $(document).on('click', '.read-more-btn', function() {
@@ -103,6 +100,41 @@
         $('#searchButton').click(function(e) {
             fetchMovies($('#searchData').val());
         });
+        $('#delete-movie').click(function(e) {
+            var data = $(this);
+            $('#delete-movie').prop('disabled', true)
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("movie.destroy", $movie->id)}}'
+                success: function(response) {
+                    $('#delete-movie').prop('disabled', false)
+                    Swal.fire({
+                        title: 'Are you Sure?',
+                        text: 'You want to delete the Movie',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            $('#deleteMovieForm').submit();
+                        }
+                    })
+                }
+                error: function(xhr, status, error) {
+                    $('#delete-movie').prop('disabled', false)
+                    console.log(error);
+                }
+            })
+
+        })
 
         function fetchMovies(search = null) {
             $('#loader').removeClass('d-none');
@@ -114,7 +146,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: '{{ route('search') }}',
+                url: '{{ route("search") }}',
                 data: {
                     search: search
                 },
