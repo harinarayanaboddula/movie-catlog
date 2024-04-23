@@ -100,41 +100,7 @@
         $('#searchButton').click(function(e) {
             fetchMovies($('#searchData').val());
         });
-        $('#delete-movie').click(function(e) {
-            var data = $(this);
-            $('#delete-movie').prop('disabled', true)
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: '{{ route("movie.destroy", $movie->id)}}'
-                success: function(response) {
-                    $('#delete-movie').prop('disabled', false)
-                    Swal.fire({
-                        title: 'Are you Sure?',
-                        text: 'You want to delete the Movie',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if(result.isConfirmed) {
-                            $('#deleteMovieForm').submit();
-                        }
-                    })
-                }
-                error: function(xhr, status, error) {
-                    $('#delete-movie').prop('disabled', false)
-                    console.log(error);
-                }
-            })
-
-        })
 
         function fetchMovies(search = null) {
             $('#loader').removeClass('d-none');
